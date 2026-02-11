@@ -1,0 +1,18 @@
+# WHY .dockerignore?
+# When Docker builds, it sends the "build context" (all files in the directory)
+# to the Docker daemon. This file excludes unnecessary files, making builds
+# faster and images smaller.
+
+__pycache__/
+*.py[cod]
+venv/
+.env
+.git/
+.gitignore
+*.md
+.pytest_cache/
+*.egg-info/
+.vscode/
+.idea/
+Dockerfile
+.dockerignore
