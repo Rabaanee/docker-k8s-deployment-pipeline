@@ -1,0 +1,10 @@
+# WHAT: Creates an isolated environment within the cluster
+# WHY: Keeps dev/staging/prod workloads separated
+# REAL WORLD: Each team or environment gets its own namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dev
+  labels:
+    environment: dev
+    managed-by: kubectl

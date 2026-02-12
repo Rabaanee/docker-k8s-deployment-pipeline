@@ -1,0 +1,95 @@
+# WHAT: Tells Kubernetes how to run your application
+# WHY: Manages pod lifecycle — scaling, updates, rollbacks, self-healing
+# KEY CONCEPT: If a pod crashes, the Deployment automatically creates a new one
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy-tracker
+  namespace: dev
+  labels:
+    app: deploy-tracker
+    version: v1.0.0
+spec:
+  # How many copies of your app to run
+  # In dev: 2 (minimum for availability)
+  # In prod: 3+ (with HPA for auto-scaling)
+  replicas: 2
+
+  # How Kubernetes finds which pods belong to this Deployment
+  selector:
+    matchLabels:
+      app: deploy-tracker
+
+  # Rolling update strategy — zero-downtime deployments
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1        # Create 1 extra pod during update
+      maxUnavailable: 0   # Never have fewer than desired replicas
+      # This means: new pod starts → health check passes → old pod terminates
+      # Result: users never see downtime
+
+  template:
+    metadata:
+      labels:
+        app: deploy-tracker
+        version: v1.0.0
+    spec:
+      containers:
+        - name: deploy-tracker
+          image: deploy-tracker:v1.0.0
+          # IMPORTANT: Never for Minikube. Set to Always when using a registry.
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 5000
+              protocol: TCP
+
+          # Environment variables — injected at runtime
+          env:
+            - name: ENVIRONMENT
+              value: "dev"
+            - name: APP_VERSION
+              value: "1.0.0"
+            - name: PORT
+              value: "5000"
+
+          # RESOURCE LIMITS — Critical for production
+          # Without these, a single pod could consume all cluster resources
+          resources:
+            requests:          # Guaranteed minimum resources
+              cpu: 100m        # 100 millicores = 0.1 CPU
+              memory: 128Mi    # 128 MB RAM
+            limits:            # Maximum allowed resources
+              cpu: 250m        # 0.25 CPU
+              memory: 256Mi    # 256 MB RAM
+
+          # LIVENESS PROBE — "Is the container alive?"
+          # If this fails, Kubernetes RESTARTS the container
+          # Use case: app is stuck in a deadlock, infinite loop, etc.
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 5000
+            initialDelaySeconds: 10    # Wait 10s after container starts
+            periodSeconds: 15          # Check every 15 seconds
+            timeoutSeconds: 3          # Timeout after 3 seconds
+            failureThreshold: 3        # Restart after 3 consecutive failures
+
+          # READINESS PROBE — "Is the container ready for traffic?"
+          # If this fails, Kubernetes STOPS sending traffic (but doesn't restart)
+          # Use case: app is starting up, loading cache, waiting for DB connection
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 5000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 3
+            failureThreshold: 3
+
+      # SECURITY CONTEXT — Pod-level security settings
+      securityContext:
+        runAsNonRoot: true       # Enforce non-root (matches Dockerfile USER)
+        runAsUser: 999
+        seccompProfile:
+          type: RuntimeDefault    # Use default seccomp profile

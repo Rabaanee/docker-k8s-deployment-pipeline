@@ -1,0 +1,26 @@
+# WHAT: Routes external HTTP traffic to your Service
+# WHY: Without Ingress, your app is only accessible inside the cluster.
+#      Ingress acts as the "front door" — handling routing, SSL, etc.
+# IN PRODUCTION: This would have a real domain name and TLS certificate
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: deploy-tracker
+  namespace: dev
+  labels:
+    app: deploy-tracker
+  annotations:
+    # These annotations vary by ingress controller (nginx, ALB, etc.)
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: deploy-tracker
+                port:
+                  number: 80

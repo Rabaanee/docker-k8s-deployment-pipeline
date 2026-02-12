@@ -1,0 +1,23 @@
+# WHAT: A stable network endpoint that routes traffic to your pods
+# WHY: Pods are ephemeral — they get new IPs when they restart.
+#      A Service provides a consistent DNS name and IP.
+# ANALOGY: A Service is like a load balancer that always knows
+#          where your pods are, even as they come and go.
+apiVersion: v1
+kind: Service
+metadata:
+  name: deploy-tracker
+  namespace: dev
+  labels:
+    app: deploy-tracker
+spec:
+  # ClusterIP = only accessible within the cluster (default, most secure)
+  # NodePort = accessible on each node's IP (useful for Minikube)
+  # LoadBalancer = provisions a cloud load balancer (EKS/AKS)
+  type: ClusterIP
+  ports:
+    - port: 80            # Service listens on port 80
+      targetPort: 5000     # Forwards to container port 5000
+      protocol: TCP
+  selector:
+    app: deploy-tracker    # Routes to pods with this label
