@@ -1,0 +1,62 @@
+# ============================================================
+# DEFAULT VALUES
+# These are overridden per-environment using values-{env}.yaml
+# ============================================================
+
+replicaCount: 2
+
+image:
+  repository: deploy-tracker
+  tag: "v1.0.0"
+  pullPolicy: Never    # Change to Always when using a real registry
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 5000
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations: {}
+  hosts:
+    - host: ""
+      paths:
+        - path: /
+          pathType: Prefix
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 250m
+    memory: 256Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 70
+
+env:
+  ENVIRONMENT: "dev"
+  APP_VERSION: "1.0.0"
+
+probes:
+  liveness:
+    path: /health
+    initialDelaySeconds: 10
+    periodSeconds: 15
+  readiness:
+    path: /health
+    initialDelaySeconds: 5
+    periodSeconds: 10
+
+podSecurityContext:
+  runAsUser: 999
+  runAsGroup: 999
+  fsGroup: 999
+
+securityContext:
+  runAsNonRoot: true

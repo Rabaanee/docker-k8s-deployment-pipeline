@@ -1,0 +1,9 @@
+apiVersion: v2
+name: deploy-tracker
+description: Deployment Tracker API — Helm chart for Kubernetes deployment
+type: application
+version: 1.0.0        # Chart version (the package version)
+appVersion: "1.0.0"   # Application version (your app code version)
+maintainers:
+  - name: Rabaanee Ahmed
+    url: https://github.com/Rabaanee
