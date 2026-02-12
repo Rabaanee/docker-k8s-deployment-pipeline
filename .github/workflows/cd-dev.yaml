@@ -1,0 +1,94 @@
+# ============================================================
+# CONTINUOUS DEPLOYMENT — DEV ENVIRONMENT
+# Runs only when code is merged to main
+# Builds final image, pushes to registry, deploys to dev
+# ============================================================
+
+name: CD - Deploy to Dev
+
+on:
+  push:
+    branches: [main]
+
+# Only allow one deployment at a time (prevents race conditions)
+concurrency:
+  group: deploy-dev
+  cancel-in-progress: false
+
+jobs:
+  build-and-push:
+    name: Build & Push Image
+    runs-on: ubuntu-latest
+    outputs:
+      image_tag: ${{ steps.meta.outputs.tags }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ secrets.DOCKERHUB_USERNAME }}/deploy-tracker
+          tags: |
+            type=sha,prefix=
+            type=raw,value=latest
+
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: ./app
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  # In a real setup, this job would deploy to an actual cluster.
+  # For this portfolio project, we show the structure and intent.
+  deploy-dev:
+    name: Deploy to Dev
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    environment: dev    # GitHub environment (can add approval rules)
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v3
+
+      # In production, you would configure kubectl to point at your EKS/AKS cluster:
+      # - name: Configure kubectl
+      #   run: aws eks update-kubeconfig --name my-cluster --region eu-west-2
+
+      - name: Show deployment command
+        run: |
+          echo "=========================================="
+          echo "DEPLOYMENT COMMAND (would run against real cluster):"
+          echo "=========================================="
+          echo ""
+          echo "helm upgrade --install deploy-tracker helm/deploy-tracker/ \\"
+          echo "  -n dev \\"
+          echo "  -f helm/deploy-tracker/values-dev.yaml \\"
+          echo "  --set image.repository=${{ secrets.DOCKERHUB_USERNAME }}/deploy-tracker \\"
+          echo "  --set image.tag=${{ github.sha }} \\"
+          echo "  --set image.pullPolicy=Always"
+          echo ""
+          echo "=========================================="
+
+      - name: Verify Helm chart renders with new tag
+        run: |
+          helm template deploy-tracker helm/deploy-tracker/ \
+            -f helm/deploy-tracker/values-dev.yaml \
+            --set image.repository=${{ secrets.DOCKERHUB_USERNAME }}/deploy-tracker \
+            --set image.tag=${{ github.sha }} \
+            --set image.pullPolicy=Always
