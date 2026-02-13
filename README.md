@@ -53,7 +53,9 @@ As part of my transition into DevOps engineering—having passed the **AZ-104 Az
 | **7. Verify** | `kubectl get pods -n dev` | Check pods are running |
 
 **Build Time:** ~2 minutes (Docker build including tests)
+
 **Deployment Time:** ~30 seconds (Helm install to Kubernetes)
+
 **Cost:** £0 (runs entirely on your local machine)
 
 ## 🏗️ Architecture Overview
@@ -64,7 +66,6 @@ The pipeline implements:
 - Helm-based deployments with per-environment configuration
 - Security scanning with Trivy in the pipeline
 - Kubernetes health probes and auto-scaling
-- Branch protection with required CI checks
 
 <img width="1466" height="2326" alt="k8s diagram drawio(2)" src="https://github.com/user-attachments/assets/31130e64-eed4-42f4-920b-837cf1adf3b2" />
 Code Push ➜ Lint & Test ➜ Security Scan ➜ Build Image ➜ Push to Registry ➜ Deploy via Helm ➜ Kubernetes
@@ -174,8 +175,8 @@ RUN python -m pytest tests/ -v --tb=short
 FROM python:3.11-slim AS production
 WORKDIR /app
 RUN groupadd -r appuser && useradd -r -g appuser appuser
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+COPY requirements-dev.txt .
+RUN pip install --no-cache-dir -r requirements-dev .txt
 COPY app.py .
 USER appuser
 EXPOSE 5000
@@ -184,9 +185,10 @@ HEALTHCHECK --interval=30s --timeout=3s \
 CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "2", "app:app"]
 ```
 
+I separated the dependencies into requirements.txt and requirements-dev.txt to follow the principle of least privilege. Since tools like pytest are only needed for validation and not for running the API, excluding them from the final production image reduces the container's footprint and improves security by minimizing unnecessary installed packages."
+
 #### 📊 Docker Build with Tests Running Inside
-<img width="958" height="499" alt="03-docker-build-success" src="https://github.com/user-attachments/assets/2601f6e4-a011-43e2-a88f-2edde3767ee5" />
-#### 📊 Container Running as Non-Root User
+<img width="958" height="499" alt="03-docker-build-success" src="https://github.com/user-attachments/assets/2601f6e4-a011-43e2-a88f-2edde3767ee5" />#### 📊 Container Running as Non-Root User
 
 ## whoami output ##
 
@@ -355,8 +357,7 @@ jobs:
 
 #### 📊 Pull Request with CI Checks
 
-<!-- SCREENSHOT: GitHub PR page showing all CI checks passing before merge is allowed -->
-<img width="900" alt="PR with CI checks" src="YOUR_SCREENSHOT_URL_HERE" />
+PR with CI checks" src="https://github.com/user-attachments/assets/532f720b-c998-46d2-9226-226a2311030a" />
 
 **Why it matters:**
 The CI pipeline is the backbone of DevOps — it automatically validates every code change before it can be merged. Security scanning (Trivy) catches known vulnerabilities in dependencies, implementing **DevSecOps** by shifting security left into the pipeline rather than treating it as an afterthought. Branch protection rules ensure no code reaches `main` without passing all checks.
@@ -488,6 +489,7 @@ Immutable image tags (using the commit SHA rather than `latest`) ensure every de
 - **GitHub:** https://github.com/Rabaanee
 
 *Open to DevOps engineering roles and eager to contribute to platform and infrastructure teams.*
+
 
 
 
