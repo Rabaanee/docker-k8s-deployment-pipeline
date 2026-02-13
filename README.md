@@ -418,6 +418,48 @@ Immutable image tags (using the commit SHA rather than `latest`) ensure every de
 
 ---
 
+## ✅ Architecture Validation
+
+**Verified Configurations:**
+- Docker multi-stage build runs tests and produces minimal image ✅
+- Container runs as non-root user (appuser) ✅
+- All 12 unit tests pass in CI pipeline ✅
+- Trivy security scan passes with no CRITICAL/HIGH vulnerabilities ✅
+- Kubernetes pods reach Running state with health probes passing ✅
+- Helm chart deploys successfully with dev, staging, and prod values ✅
+- CI pipeline blocks merge on any stage failure ✅
+- CD pipeline builds, pushes, and deploys on merge to main ✅
+
+**Entire pipeline managed through GitHub Actions with automated quality gates.**
+
+---
+
+## 📊 Project Metrics
+
+| **Metric** | **Value** | **Insight** |
+|-----------|----------|-------------|
+| **Pipeline Stages** | 5 (CI) + 3 (CD) | Comprehensive quality gates |
+| **Unit Tests** | 12 | Full endpoint coverage |
+| **Docker Image Size** | ~150MB | Multi-stage build (vs ~900MB single-stage) |
+| **Helm Templates** | 5 | Deployment, Service, Ingress, HPA, NetworkPolicy |
+| **Environment Configs** | 3 | Dev, Staging, Production |
+| **Security Scans** | Trivy (every build) | DevSecOps integrated |
+| **Deployment Cost** | £0 | Runs entirely on local Minikube |
+| **Build Time** | ~2 min | Docker build including tests |
+
+## 🎯 What This Project Demonstrates to Employers
+
+1. **Container Expertise:** Multi-stage builds, non-root security, health checks, registry management
+2. **Kubernetes Proficiency:** Deployments, probes, HPA, network policies, resource management
+3. **Helm Knowledge:** Custom charts, per-environment values, templating
+4. **CI/CD Pipeline Design:** Automated quality gates from lint to deploy
+5. **DevSecOps Thinking:** Security scanning integrated into the pipeline, not bolted on
+6. **Git Best Practices:** Branch protection, PR workflow, conventional commits
+7. **Documentation Skills:** Comprehensive, recruiter-friendly README with evidence
+
+---
+
+
 
 
 
