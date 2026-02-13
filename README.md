@@ -78,6 +78,7 @@ docker-k8s-deployment-pipeline/
 │   ├── Dockerfile                      # Multi-stage: test → production
 │   ├── app.py                          # REST API (Deployment Tracker)
 │   ├── requirements.txt                # Pinned Python dependencies
+│   ├── requirements-dev.txt            # Pinned Python dependencies (No pytest)
 │   ├── .dockerignore                   # Excludes unnecessary files
 │   └── tests/
 │       └── test_app.py                 # 12 unit tests (pytest)
@@ -491,6 +492,7 @@ Immutable image tags (using the commit SHA rather than `latest`) ensure every de
 - **GitHub:** https://github.com/Rabaanee
 
 *Open to DevOps engineering roles and eager to contribute to platform and infrastructure teams.*
+
 
 
 
