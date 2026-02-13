@@ -20,7 +20,7 @@ As part of my transition into DevOps engineering—having passed the **AZ-104 Az
 **Objective:** Build an automated pipeline that lints, tests, scans, builds, and deploys a containerised application to Kubernetes with zero manual intervention.
 
 **Key Features:**
-- ✅ **Multi-Stage Docker Build** – Tests run inside the build, production image is minimal (~150MB)
+- ✅ **Multi-Stage Docker Build** – Tests run inside the build, production image is minimal (~217MB)
 - ✅ **Non-Root Container** – Application runs as `appuser`, not root (security best practice)
 - ✅ **Kubernetes Deployment** – Rolling updates with liveness/readiness probes for zero-downtime
 - ✅ **Helm Chart** – Templated deployments with per-environment configs (dev/staging/prod)
@@ -444,7 +444,7 @@ Immutable image tags (using the commit SHA rather than `latest`) ensure every de
 |-----------|----------|-------------|
 | **Pipeline Stages** | 5 (CI) + 3 (CD) | Comprehensive quality gates |
 | **Unit Tests** | 12 | Full endpoint coverage |
-| **Docker Image Size** | ~150MB | Multi-stage build (vs ~900MB single-stage) |
+| **Docker Image Size** | ~217MB | Multi-stage build (vs ~900MB single-stage) |
 | **Helm Templates** | 5 | Deployment, Service, Ingress, HPA, NetworkPolicy |
 | **Environment Configs** | 3 | Dev, Staging, Production |
 | **Security Scans** | Trivy (every build) | DevSecOps integrated |
@@ -492,6 +492,7 @@ Immutable image tags (using the commit SHA rather than `latest`) ensure every de
 - **GitHub:** https://github.com/Rabaanee
 
 *Open to DevOps engineering roles and eager to contribute to platform and infrastructure teams.*
+
 
 
 
