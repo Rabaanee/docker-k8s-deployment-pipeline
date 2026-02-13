@@ -9,6 +9,9 @@ name: CD - Deploy to Dev
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - 'README.md'
+      - 'docs/**'
 
 # Only allow one deployment at a time (prevents race conditions)
 concurrency:
