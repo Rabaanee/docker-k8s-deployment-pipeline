@@ -188,7 +188,9 @@ CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "2", "app:app"]
 I separated the dependencies into requirements.txt and requirements-dev.txt to follow the principle of least privilege. Since tools like pytest are only needed for validation and not for running the API, excluding them from the final production image reduces the container's footprint and improves security by minimizing unnecessary installed packages."
 
 #### 📊 Docker Build with Tests Running Inside
-<img width="958" height="499" alt="03-docker-build-success" src="https://github.com/user-attachments/assets/2601f6e4-a011-43e2-a88f-2edde3767ee5" />#### 📊 Container Running as Non-Root User
+<img width="958" height="499" alt="03-docker-build-success" src="https://github.com/user-attachments/assets/2601f6e4-a011-43e2-a88f-2edde3767ee5" />
+
+#### 📊 Container Running as Non-Root User
 
 ## whoami output ##
 
@@ -489,6 +491,7 @@ Immutable image tags (using the commit SHA rather than `latest`) ensure every de
 - **GitHub:** https://github.com/Rabaanee
 
 *Open to DevOps engineering roles and eager to contribute to platform and infrastructure teams.*
+
 
 
 
