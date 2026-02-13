@@ -198,7 +198,7 @@ CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "2", "app:app"]
 
 
 **Why it matters:**
-Multi-stage builds serve two purposes: tests run during every build (if tests fail, no image is created), and the production image only contains runtime dependencies — reducing size from ~900MB to ~150MB. Running as a non-root user is a fundamental container security practice. If an attacker exploits the application, they only get non-root access with limited permissions.
+Multi-stage builds serve two purposes: tests run during every build (if tests fail, no image is created), and the production image only contains runtime dependencies — reducing size from ~900MB to ~217MB. Running as a non-root user is a fundamental container security practice. If an attacker exploits the application, they only get non-root access with limited permissions.
 
 ---
 
@@ -351,6 +351,73 @@ jobs:
 #### 📊 Security Scan Results (Trivy)
 
 <img width="1808" height="835" alt="16-trivy-scan" src="https://github.com/user-attachments/assets/bd86eb26-0e2c-4515-805e-0391e06652f5" />
+
+
+#### 📊 Pull Request with CI Checks
+
+<!-- SCREENSHOT: GitHub PR page showing all CI checks passing before merge is allowed -->
+<img width="900" alt="PR with CI checks" src="YOUR_SCREENSHOT_URL_HERE" />
+
+**Why it matters:**
+The CI pipeline is the backbone of DevOps — it automatically validates every code change before it can be merged. Security scanning (Trivy) catches known vulnerabilities in dependencies, implementing **DevSecOps** by shifting security left into the pipeline rather than treating it as an afterthought. Branch protection rules ensure no code reaches `main` without passing all checks.
+
+---
+
+### Phase 6: CD Pipeline & Docker Hub
+
+**What I built:**
+- CD pipeline triggered on merge to `main`
+- Builds final Docker image tagged with commit SHA (immutable tags)
+- Pushes to Docker Hub container registry
+- Deploys to dev environment via Helm
+
+#### 📊 CD Pipeline — Build & Deploy
+
+<!-- SCREENSHOT: GitHub → Actions showing the CD pipeline with build-and-push and deploy jobs -->
+<img width="900" alt="CD Pipeline" src="https://github.com/user-attachments/assets/1643e555-53b3-44e6-9c56-bb903663d52c" />
+
+#### 📊 Image Pushed to Docker Hub
+
+<!-- SCREENSHOT: Docker Hub showing the deploy-tracker repository with image tags -->
+<img width="700" alt="Docker Hub image" src="https://github.com/user-attachments/assets/2a6bf9d6-06e3-4e69-96fd-6153e85dada9" />
+
+**Why it matters:**
+Immutable image tags (using the commit SHA rather than `latest`) ensure every deployment is traceable back to the exact code that produced it. If something breaks in production, you know exactly which commit caused it and can roll back to the previous SHA. The CD pipeline turns a merge to `main` into a deployed application with zero manual steps.
+
+---
+
+---
+
+## 🎯 Deployment Summary
+
+**Pipeline Components:**
+
+| Category | Component | Status |
+|:---|:---|:---:|
+| **Application** | Flask REST API (5 endpoints) | ✅ |
+| | 12 unit tests (pytest) | ✅ |
+| **Docker** | Multi-stage Dockerfile | ✅ |
+| | Non-root user (appuser) | ✅ |
+| | Docker health check | ✅ |
+| | Image pushed to Docker Hub | ✅ |
+| **Kubernetes** | Deployment with rolling updates | ✅ |
+| | Liveness & readiness probes | ✅ |
+| | Resource requests & limits | ✅ |
+| | ClusterIP Service | ✅ |
+| | Nginx Ingress | ✅ |
+| | Pod security context | ✅ |
+| **Helm** | Custom chart with templates | ✅ |
+| | values-dev.yaml | ✅ |
+| | values-staging.yaml | ✅ |
+| | values-prod.yaml | ✅ |
+| | Horizontal Pod Autoscaler | ✅ |
+| | Network Policy | ✅ |
+| **CI/CD** | CI: lint → test → scan → build → helm lint | ✅ |
+| | CD: build → push → deploy | ✅ |
+| | Trivy security scanning | ✅ |
+
+---
+
 
 
 
