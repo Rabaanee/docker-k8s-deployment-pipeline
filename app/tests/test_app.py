@@ -6,6 +6,8 @@ These tests are run:
 2. Automatically in the CI pipeline (GitHub Actions)
 3. Inside the Docker build (multi-stage build)
 
+3 layers of tests
+
 If ANY test fails, the pipeline stops. This is a quality gate.
 """
 
