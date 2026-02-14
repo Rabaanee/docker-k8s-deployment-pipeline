@@ -11,7 +11,7 @@ metadata:
     version: v1.0.0
 spec:
   # How many copies of your app to run
-  # In dev: 2 (minimum for availability)
+  # In dev: 2  (minimum for availability)
   # In prod: 3+ (with HPA for auto-scaling)
   replicas: 2
 
