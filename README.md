@@ -403,7 +403,6 @@ feature/add-branch-protection-docs
 <img width="700" alt="Branch protection" src="Screenshot" />
 =======
 <img width="700" alt="Branch protection" src="https://github.com/user-attachments/assets/74722a62-4250-43d1-94b0-505d0596e272" />
-main
 
 **Why it matters:**
 Branch protection prevents accidental or untested changes from reaching the main branch. In a team environment, this ensures every change is peer-reviewed and passes automated checks before merge. The conventional commit format makes Git history readable and enables automated changelog generation.
@@ -512,5 +511,6 @@ Branch protection prevents accidental or untested changes from reaching the main
 - **GitHub:** https://github.com/Rabaanee
 
 *Open to DevOps engineering roles and eager to contribute to platform and infrastructure teams.*
+
 
 
