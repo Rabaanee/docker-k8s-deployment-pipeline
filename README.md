@@ -194,11 +194,11 @@ I separated the dependencies into requirements.txt and requirements-dev.txt to f
 
 #### 📊 Container Running as Non-Root User
 
-# whoami output #
+** whoami output **
 
 <img width="957" height="97" alt="05-non-root-user" src="https://github.com/user-attachments/assets/d6a3d4de-53ec-474c-88c1-e9e5eae5cf0b" />
 
-# Image Size #
+** Image Size **
 
 <img width="740" height="65" alt="deploy tracker size" src="https://github.com/user-attachments/assets/7f8ee91b-26a8-460b-8997-e6f9c57f6bc0" />
 
@@ -314,7 +314,7 @@ autoscaling:
 #### 📊 Helm Deployment
 <img width="998" height="175" alt="11-helm-install" src="https://github.com/user-attachments/assets/3d7b3c43-a2d4-4eb3-89da-d7871c694cd4" />
 
-# Helm install output  #
+** Helm install output  **
 <img src="https://github.com/user-attachments/assets/abaf497b-85a8-48a4-8352-c05a15a88d7d" width="400" alt="helm install" /> 
 
 # Helm release list  # 
@@ -512,4 +512,5 @@ Branch protection prevents accidental or untested changes from reaching the main
 - **GitHub:** https://github.com/Rabaanee
 
 *Open to DevOps engineering roles and eager to contribute to platform and infrastructure teams.*
+
 
