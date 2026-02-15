@@ -178,7 +178,7 @@ FROM python:3.11-slim AS production
 WORKDIR /app
 RUN groupadd -r appuser && useradd -r -g appuser appuser
 COPY requirements-dev.txt .
-RUN pip install --no-cache-dir -r requirements-dev .txt
+RUN pip install --no-cache-dir -r requirements-dev.txt
 COPY app.py .
 USER appuser
 EXPOSE 5000
@@ -187,18 +187,18 @@ HEALTHCHECK --interval=30s --timeout=3s \
 CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "2", "app:app"]
 ```
 
-I separated the dependencies into requirements.txt and requirements-dev.txt to follow the principle of least privilege. Since tools like pytest are only needed for validation and not for running the API, excluding them from the final production image reduces the container's footprint and improves security by minimizing unnecessary installed packages."
+I separated the dependencies into requirements.txt and requirements-dev.txt to follow the principle of least privilege. Since tools like pytest are only needed for validation and not for running the API, excluding them from the final production image reduces the container's footprint and improves security by minimizing unnecessary installed packages.
 
 #### 📊 Docker Build with Tests Running Inside
 <img width="958" height="499" alt="03-docker-build-success" src="https://github.com/user-attachments/assets/2601f6e4-a011-43e2-a88f-2edde3767ee5" />
 
 #### 📊 Container Running as Non-Root User
 
-## whoami output ##
+# whoami output #
 
 <img width="957" height="97" alt="05-non-root-user" src="https://github.com/user-attachments/assets/d6a3d4de-53ec-474c-88c1-e9e5eae5cf0b" />
 
-## Image Size ## 
+# Image Size #
 
 <img width="740" height="65" alt="deploy tracker size" src="https://github.com/user-attachments/assets/7f8ee91b-26a8-460b-8997-e6f9c57f6bc0" />
 
@@ -314,10 +314,10 @@ autoscaling:
 #### 📊 Helm Deployment
 <img width="998" height="175" alt="11-helm-install" src="https://github.com/user-attachments/assets/3d7b3c43-a2d4-4eb3-89da-d7871c694cd4" />
 
-## Helm install output  ## 
+# Helm install output  #
 <img src="https://github.com/user-attachments/assets/abaf497b-85a8-48a4-8352-c05a15a88d7d" width="400" alt="helm install" /> 
 
-## Helm release list  ## 
+# Helm release list  # 
 <img src="https://github.com/user-attachments/assets/0e22f57a-d0a6-483e-82ed-0df454fd76a4" alt="helm list" /> 
 
 **Why it matters:**
@@ -361,7 +361,7 @@ jobs:
 
 #### 📊 Pull Request with CI Checks
 
-PR with CI checks" src="https://github.com/user-attachments/assets/532f720b-c998-46d2-9226-226a2311030a" />
+<img width="900" alt="PR with CI checks" src="https://github.com/user-attachments/assets/532f720b-c998-46d2-9226-226a2311030a" />
 
 **Why it matters:**
 The CI pipeline is the backbone of DevOps — it automatically validates every code change before it can be merged. Security scanning (Trivy) catches known vulnerabilities in dependencies, implementing **DevSecOps** by shifting security left into the pipeline rather than treating it as an afterthought. Branch protection rules ensure no code reaches `main` without passing all checks.
@@ -399,7 +399,11 @@ Immutable image tags (using the commit SHA rather than `latest`) ensure every de
 
 #### 📊 Branch Protection Rules
 
+feature/add-branch-protection-docs
 <img width="700" alt="Branch protection" src="Screenshot" />
+=======
+<img width="700" alt="Branch protection" src="https://github.com/user-attachments/assets/74722a62-4250-43d1-94b0-505d0596e272" />
+main
 
 **Why it matters:**
 Branch protection prevents accidental or untested changes from reaching the main branch. In a team environment, this ensures every change is peer-reviewed and passes automated checks before merge. The conventional commit format makes Git history readable and enables automated changelog generation.
@@ -508,32 +512,4 @@ Branch protection prevents accidental or untested changes from reaching the main
 - **GitHub:** https://github.com/Rabaanee
 
 *Open to DevOps engineering roles and eager to contribute to platform and infrastructure teams.*
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

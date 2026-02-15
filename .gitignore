@@ -23,4 +23,8 @@ Thumbs.db
 # Secrets - NEVER commit these
 *.pem
 *.key
+
 secrets.yaml
+
+# Helm
+*.sh
