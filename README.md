@@ -27,6 +27,7 @@ As part of my transition into DevOps engineering—having passed the **AZ-104 Az
 - ✅ **CI/CD Pipeline** – GitHub Actions: lint → test → security scan → build → push → deploy
 - ✅ **Security Scanning** – Trivy vulnerability scanning integrated into the pipeline
 - ✅ **Auto-Scaling** – Horizontal Pod Autoscaler scales pods based on CPU utilisation
+- ✅ **Branch Protection** – PRs required, CI must pass before merge to main
 
 ## 🛠️ Skills Demonstrated
 
@@ -389,6 +390,19 @@ The CI pipeline is the backbone of DevOps — it automatically validates every c
 Immutable image tags (using the commit SHA rather than `latest`) ensure every deployment is traceable back to the exact code that produced it. If something breaks in production, you know exactly which commit caused it and can roll back to the previous SHA. The CD pipeline turns a merge to `main` into a deployed application with zero manual steps.
 
 ---
+### Phase 7: Branch Protection & Git Strategy
+
+**What I built:**
+- Branch protection rules on `main` — PRs required, CI must pass before merge
+- Documented branching strategy (feature → main)
+- Conventional commit messages (`feat:`, `fix:`, `docs:`, `style:`)
+
+#### 📊 Branch Protection Rules
+
+<img width="700" alt="Branch protection" src="Screenshot" />
+
+**Why it matters:**
+Branch protection prevents accidental or untested changes from reaching the main branch. In a team environment, this ensures every change is peer-reviewed and passes automated checks before merge. The conventional commit format makes Git history readable and enables automated changelog generation.
 
 ---
 
@@ -419,6 +433,7 @@ Immutable image tags (using the commit SHA rather than `latest`) ensure every de
 | **CI/CD** | CI: lint → test → scan → build → helm lint | ✅ |
 | | CD: build → push → deploy | ✅ |
 | | Trivy security scanning | ✅ |
+| | Branch protection on main | ✅ |
 
 ---
 
@@ -433,6 +448,7 @@ Immutable image tags (using the commit SHA rather than `latest`) ensure every de
 - Helm chart deploys successfully with dev, staging, and prod values ✅
 - CI pipeline blocks merge on any stage failure ✅
 - CD pipeline builds, pushes, and deploys on merge to main ✅
+- Branch protection enforces PR + CI checks before merge ✅
 
 **Entire pipeline managed through GitHub Actions with automated quality gates.**
 
